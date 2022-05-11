@@ -26,6 +26,8 @@
   <link rel="stylesheet" href="{{ asset('template/admin/plugins/daterangepicker/daterangepicker.css')}}">
   <!-- summernote -->
   <link rel="stylesheet" href="{{ asset('template/admin/plugins/summernote/summernote-bs4.min.css')}}">
+
+  @stack('css')
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
@@ -97,5 +99,7 @@
 <script src="{{ asset('template/admin/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js')}}"></script>
 <!-- AdminLTE App -->
 <script src="{{ asset('template/admin/dist/js/adminlte.js')}}"></script>
+<!-- Page specific script -->
+@stack('script')
 </body>
 </html>

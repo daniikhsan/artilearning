@@ -20,3 +20,10 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::middleware(['auth'])->group(function () {
+    Route::resource('user', App\Http\Controllers\UserController::class);
+    Route::resource('lecturer', App\Http\Controllers\LecturerController::class);
+    Route::resource('student', App\Http\Controllers\StudentController::class);
+    Route::resource('course', App\Http\Controllers\CourseController::class);
+});

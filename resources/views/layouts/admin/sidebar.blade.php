@@ -21,34 +21,58 @@
             </p>
             </a>
         </li>
-        <li class="nav-header">USERS</li>
+        <li class="nav-header">USERS & OTHERS</li>
         <li class="nav-item ">
-            <a href="#" class="nav-link">
-            <i class="nav-icon far fa-calendar-alt"></i>
+            <a href="{{ route('user.index') }}" class="nav-link {{ Route::is('user.*') ? 'active' : '' }}">
+            <i class="nav-icon fas fa-users"></i>
             <p>
                 All Users
             </p>
             </a>
         </li>
         <li class="nav-item">
-            <a href="#" class="nav-link">
-                <i class="nav-icon far fa-calendar-alt"></i>
+            <a href="{{ route('lecturer.index') }}" class="nav-link {{ Route::is('lecturer.*') ? 'active' : '' }}">
+                <i class="nav-icon fas fa-chalkboard-teacher"></i>
                 <p>
-                    Dosen
+                    Lecturers
+                </p>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{{ route('student.index') }}" class="nav-link {{ Route::is('student.*') ? 'active' : '' }}">
+                <i class="nav-icon fas fa-user-graduate"></i>
+                <p>
+                    Students
                 </p>
             </a>
         </li>
         <li class="nav-item">
             <a href="#" class="nav-link">
-                <i class="nav-icon far fa-calendar-alt"></i>
+                <i class="nav-icon fas fa-building"></i>
                 <p>
-                    Mahasiswa
+                    Majors/Departments
+                </p>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-cogs"></i>
+                <p>
+                    Course Settings
                 </p>
             </a>
         </li>
         <li class="nav-header">COURSES</li>
         <li class="nav-item ">
-            <a href="#" class="nav-link">
+            <a href="{{ route('course.index') }}" class="nav-link {{ Route::is('course.index') ? 'active' : '' }}">
+            <i class="nav-icon fas fa-list"></i>
+            <p>
+                All Courses
+            </p>
+            </a>
+        </li>
+        <li class="nav-item ">
+            <a href="{{ route('course.show', 1) }}" class="nav-link {{ Route::is('course.show', 1) ? 'active' : '' }}">
             <i class="nav-icon far fa-circle"></i>
             <p>
                 Pemrograman Web
