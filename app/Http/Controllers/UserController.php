@@ -144,7 +144,7 @@ class UserController extends Controller
             Excel::import(new UsersImport, $request->file('file')->store('files'));
             return redirect()->route('user.index')->with('success', 'User successfully imported.');
         } catch (\Throwable $th) {
-            return redirect()->route('user.index')->with('error', 'Something went wrong. Make sure the data you have entered is correct and there is no duplication.');
+            return redirect()->route('user.index')->with('error', 'Something went wrong. Make sure the data you have entered is correct and there is no duplication.' .$th->getMessage());
         }
     }
 }
