@@ -4,15 +4,29 @@
 <!-- Content Header (Page header) -->
 <div class="content-header">
     <div class="container-fluid">
-    <div class="row mb-2">
-        <div class="col-md-6">
-            <h1 class="m-0">{{ $title }}</h1>
-        </div><!-- /.col -->
-        <div class="col-md-6">
-            <a href="{{ route('user.create') }}" class="btn btn-outline-primary float-right"><i class="fas fa-plus mr-2"></i> Add User</a>
-            <button data-target="#importUsers" data-toggle="modal" class="btn btn-outline-secondary float-right mr-2"><i class="fas fa-upload mr-2"></i> Import Users</button>
-        </div>
-    </div><!-- /.row -->
+        <div class="row mb-2">
+            <div class="col-md-6">
+                <h1 class="m-0">{{ $title }}</h1>
+            </div><!-- /.col -->
+            <div class="col-md-6">
+                <a href="{{ route('user.create') }}" class="btn btn-outline-primary float-right"><i class="fas fa-plus mr-2"></i> Add User</a>
+                <button data-target="#importUsers" data-toggle="modal" class="btn btn-outline-secondary float-right mr-2"><i class="fas fa-upload mr-2"></i> Import Users</button>
+            </div>
+        </div><!-- /.row -->
+        @if(Session::get('success'))
+            <div class="alert alert-success alert-dismissible mb-0 mt-1">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                <h5><i class="icon fas fa-check"></i> Success!</h5>
+                {{ Session::get('success') }}
+            </div>
+        @endif
+        @if(Session::get('error'))
+            <div class="alert alert-warning alert-dismissible mb-0 mt-1">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                <h5><i class="icon fas fa-exclamation-triangle"></i> Error!</h5>
+                {{ Session::get('error') }}
+            </div>
+        @endif
     </div><!-- /.container-fluid -->
 </div>
 <!-- /.content-header -->
@@ -37,23 +51,74 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td class="text-center">1</td>
-                            <td>Muhammad Priandani Nur Ikhsan</td>
-                            <td class="text-center">10201063@student.itk.ac.id</td>
-                            <td class="text-center">Fisika</td>
-                            <td class="text-center">Student</td>
-                            <td class="text-center">
-                                <div class="btn btn-toolbar justify-content-center">
-                                    <a href="{{ route('user.edit', 1) }}" class="btn btn-sm btn-primary mr-2"><i class="fa fa-pen"></i></a>
-                                    <form action="{{ route('user.destroy', 1) }}" method="post">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>
-                                    </form>
+                        @foreach($users as $user)
+                            <tr>
+                                <td class="text-center">{{ $loop->iteration }}</td>
+                                <td>{{ $user->name }}</td>
+                                <td class="text-center">{{ $user->email }}</td>
+                                <td class="text-center">{{ $user->major->name }}</td>
+                                <td class="text-center">{{ Str::title($user->role) }}</td>
+                                <td class="text-center">
+                                    <div class="btn btn-toolbar justify-content-center">
+                                        <button class="btn btn-sm btn-default mr-2" data-toggle="modal" data-target="#modal-default-{{ $user->id }}"><i class="fa fa-eye"></i></button>
+                                        <a href="{{ route('user.edit', $user->id) }}" class="btn btn-sm btn-primary mr-2"><i class="fa fa-pen"></i></a>
+                                        <form action="{{ route('user.destroy', $user->id) }}" method="post" onsubmit=" return confirm('Are you sure want to delete this item?')">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button class="btn btn-sm btn-danger {{ $user->role == 'admin' ? 'disabled' : '' }}"><i class="fa fa-trash"></i></button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                            <!-- User Show -->
+                            <div class="modal fade" id="modal-default-{{$user->id}}">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">{{ $user->name }}</h4>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <img src="{{ url($user->avatar) }}" alt="{{ $user->name }}" width="100" class="mb-3">
+                                            </div>
+                                            <div class="col-9">
+                                                <small class="m-0">Name</small>
+                                                <p class="mb-2">{{ $user->name }}</p>
+                                                <small class="m-0">Email</small>
+                                                <p class="mb-2"><i>{{ $user->email }}</i></p>
+                                                <small class="m-0">Role</small>
+                                                <p class="mb-2"><i>{{ Str::title($user->role) }}</i></p>
+                                                <small class="m-0">Major/Department</small>
+                                                <p class="mb-2"><i>{{ $user->major->name }}/{{ $user->major->department->name }}</i></p>
+                                                <small class="m-0">Gender</small>
+                                                <p class="mb-2"><i>{{ $user->gender }}</i></p>
+                                                <small class="m-0">Address</small>
+                                                <p class="mb-2"><i>{{ $user->address }}</i></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer justify-content-between">
+                                        <div>
+                                            <a href="{{ route('user.edit', $user->id) }}" class="btn btn-sm btn-primary mr-2"><i class="fa fa-pen"></i> Edit</a>
+                                            <form action="{{ route('user.destroy', $user->id) }}" method="post" onsubmit=" return confirm('Are you sure want to delete this item?')" style="display:inline;">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button class="btn btn-sm btn-danger {{ $user->role == 'admin' ? 'disabled' : '' }}"><i class="fa fa-trash"></i> Delete</button>
+                                            </form>
+                                        </div>
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                    </div>
+                                    </div>
+                                    <!-- /.modal-content -->
                                 </div>
-                            </td>
-                        </tr>
+                                <!-- /.modal-dialog -->
+                            </div>
+                            <!-- ./User Show -->
+                        @endforeach
                     </tbody>
                     <tfoot>
                         <tr class="text-center">
@@ -86,26 +151,30 @@
         </button>
       </div>
       <div class="modal-body">
-        <form action="#" method="post">
+        <form action="{{ route('user.import') }}" method="post" enctype="multipart/form-data">
+            @csrf
             <div class="form-group">
                 <label for="exampleInputFile">File input (.xls/.xlsx)</label>
                 <div class="input-group">
                     <div class="custom-file">
-                        <input type="file" class="custom-file-input" id="exampleInputFile">
+                        <input type="file" class="custom-file-input" name="file" id="exampleInputFile">
                         <label class="custom-file-label" for="exampleInputFile">Choose file</label>
                     </div>
                 </div>
+                <small><a href="{{ url('/template/template_import_users.xlsx') }}">Download Template</a></small>
+            </div>
+            <div class="modal-footer pr-0">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary">Import</button>
             </div>
         </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Import</button>
       </div>
     </div>
   </div>
 </div>
 <!-- /.Modal -->
+
+
 @endsection
 
 @push('css')

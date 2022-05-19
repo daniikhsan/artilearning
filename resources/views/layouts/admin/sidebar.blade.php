@@ -3,7 +3,7 @@
     <!-- Sidebar user panel (optional) -->
     <div class="user-panel mt-3 pb-3 mb-3 d-flex">
     <div class="image">
-        <img src="{{ asset('template/admin/dist/img/user2-160x160.jpg')}}" class="img-circle elevation-2" alt="User Image">
+        <img src="{{ url(auth()->user()->avatar) }}" class="img-circle elevation-2" alt="User Image">
     </div>
     <div class="info">
         <a href="#" class="d-block">{{ Auth()->user()->name }}</a>
@@ -21,7 +21,7 @@
             </p>
             </a>
         </li>
-        <li class="nav-header">USERS & OTHERS</li>
+        <li class="nav-header">MASTER DATA</li>
         <li class="nav-item ">
             <a href="{{ route('user.index') }}" class="nav-link {{ Route::is('user.*') ? 'active' : '' }}">
             <i class="nav-icon fas fa-users"></i>
