@@ -47,10 +47,10 @@
             </a>
         </li>
         <li class="nav-item">
-            <a href="#" class="nav-link">
+            <a href="{{ route('department.index') }}" class="nav-link {{ Route::is('department.*') ? 'active' : '' }}">
                 <i class="nav-icon fas fa-building"></i>
                 <p>
-                    Majors/Departments
+                    Departments
                 </p>
             </a>
         </li>
