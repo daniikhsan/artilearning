@@ -4,15 +4,28 @@
 <!-- Content Header (Page header) -->
 <div class="content-header">
     <div class="container-fluid">
-    <div class="row mb-2">
-        <div class="col-md-6">
-            <h1 class="m-0">{{ $title }}</h1>
-        </div><!-- /.col -->
-        <div class="col-md-6">
-            <a href="{{ route('student.create') }}" class="btn btn-outline-primary float-right"><i class="fas fa-plus mr-2"></i> Add Student</a>
-            <button data-target="#importUsers" data-toggle="modal" class="btn btn-outline-secondary float-right mr-2"><i class="fas fa-upload mr-2"></i> Import Students</button>
-        </div>
-    </div><!-- /.row -->
+        <div class="row mb-2">
+            <div class="col-md-6">
+                <h1 class="m-0">{{ $title }}</h1>
+            </div><!-- /.col -->
+            <div class="col-md-6">
+                <a href="{{ route('student.create') }}" class="btn btn-outline-primary float-right"><i class="fas fa-plus mr-2"></i> Add Student</a>
+            </div>
+        </div><!-- /.row -->
+        @if(Session::get('success'))
+            <div class="alert alert-success alert-dismissible mb-0 mt-1">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                <h5><i class="icon fas fa-check"></i> Success!</h5>
+                {{ Session::get('success') }}
+            </div>
+        @endif
+        @if(Session::get('error'))
+            <div class="alert alert-warning alert-dismissible mb-0 mt-1">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                <h5><i class="icon fas fa-exclamation-triangle"></i> Error!</h5>
+                {{ Session::get('error') }}
+            </div>
+        @endif
     </div><!-- /.container-fluid -->
 </div>
 <!-- /.content-header -->
@@ -32,26 +45,79 @@
                             <th>Name</th>
                             <th>Email</th>
                             <th>Major</th>
+                            <th>Role</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td class="text-center">1</td>
-                            <td>Muhammad Priandani Nur Ikhsan</td>
-                            <td class="text-center">10201063@student.itk.ac.id</td>
-                            <td class="text-center">Fisika</td>
-                            <td class="text-center">
-                                <div class="btn btn-toolbar justify-content-center">
-                                    <a href="{{ route('student.edit', 1) }}" class="btn btn-sm btn-primary mr-2"><i class="fa fa-pen"></i></a>
-                                    <form action="{{ route('student.destroy', 1) }}" method="post">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>
-                                    </form>
+                        @foreach($students as $student)
+                            <tr>
+                                <td class="text-center">{{ $loop->iteration }}</td>
+                                <td>{{ $student->name }}</td>
+                                <td class="text-center">{{ $student->email }}</td>
+                                <td class="text-center">{{ $student->major->name }}</td>
+                                <td class="text-center">{{ Str::title($student->role) }}</td>
+                                <td class="text-center">
+                                    <div class="btn btn-toolbar justify-content-center">
+                                        <button class="btn btn-sm btn-default mr-2" data-toggle="modal" data-target="#modal-default-{{ $student->id }}"><i class="fa fa-eye"></i></button>
+                                        <a href="{{ route('student.edit', $student->id) }}" class="btn btn-sm btn-primary mr-2"><i class="fa fa-pen"></i></a>
+                                        <form action="{{ route('student.destroy', $student->id) }}" method="post" onsubmit=" return confirm('Are you sure want to delete this item?')">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button class="btn btn-sm btn-danger {{ $student->role == 'admin' ? 'disabled' : '' }}"><i class="fa fa-trash"></i></button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                            <!-- User Show -->
+                            <div class="modal fade" id="modal-default-{{$student->id}}">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">{{ $student->name }}</h4>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <img src="{{ url($student->avatar) }}" alt="{{ $student->name }}" width="100" class="mb-3">
+                                            </div>
+                                            <div class="col-9">
+                                                <small class="m-0">Name</small>
+                                                <p class="mb-2">{{ $student->name }}</p>
+                                                <small class="m-0">Email</small>
+                                                <p class="mb-2"><i>{{ $student->email }}</i></p>
+                                                <small class="m-0">Role</small>
+                                                <p class="mb-2"><i>{{ Str::title($student->role) }}</i></p>
+                                                <small class="m-0">Major/Department</small>
+                                                <p class="mb-2"><i>{{ $student->major->name }}/{{ $student->major->department->name }}</i></p>
+                                                <small class="m-0">Gender</small>
+                                                <p class="mb-2"><i>{{ $student->gender }}</i></p>
+                                                <small class="m-0">Address</small>
+                                                <p class="mb-2"><i>{{ $student->address }}</i></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer justify-content-between">
+                                        <div>
+                                            <a href="{{ route('student.edit', $student->id) }}" class="btn btn-sm btn-primary mr-2"><i class="fa fa-pen"></i> Edit</a>
+                                            <form action="{{ route('student.destroy', $student->id) }}" method="post" onsubmit=" return confirm('Are you sure want to delete this item?')" style="display:inline;">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button class="btn btn-sm btn-danger {{ $student->role == 'admin' ? 'disabled' : '' }}"><i class="fa fa-trash"></i> Delete</button>
+                                            </form>
+                                        </div>
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                    </div>
+                                    </div>
+                                    <!-- /.modal-content -->
                                 </div>
-                            </td>
-                        </tr>
+                                <!-- /.modal-dialog -->
+                            </div>
+                            <!-- ./User Show -->
+                        @endforeach
                     </tbody>
                     <tfoot>
                         <tr class="text-center">
@@ -59,6 +125,7 @@
                             <th>Name</th>
                             <th>Email</th>
                             <th>Major</th>
+                            <th>Role</th>
                             <th>Actions</th>
                         </tr>
                     </tfoot>
@@ -72,37 +139,7 @@
 </section>
 <!-- /.content -->
 
-<!-- Modal -->
-<div class="modal fade" id="importUsers" tabindex="-1" role="dialog" aria-labelledby="importUsersTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle"><i class="fas fa-upload mr-2"></i> Import Students</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <form action="#" method="post">
-            <div class="form-group">
-                <label for="exampleInputFile">File input (.xls/.xlsx)</label>
-                <div class="input-group">
-                    <div class="custom-file">
-                        <input type="file" class="custom-file-input" id="exampleInputFile">
-                        <label class="custom-file-label" for="exampleInputFile">Choose file</label>
-                    </div>
-                </div>
-            </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Import</button>
-      </div>
-    </div>
-  </div>
-</div>
-<!-- /.Modal -->
+
 @endsection
 
 @push('css')

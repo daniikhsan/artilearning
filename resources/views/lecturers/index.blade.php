@@ -102,8 +102,8 @@
                                     </div>
                                     <div class="modal-footer justify-content-between">
                                         <div>
-                                            <a href="{{ route('user.edit', $lecturer->id) }}" class="btn btn-sm btn-primary mr-2"><i class="fa fa-pen"></i> Edit</a>
-                                            <form action="{{ route('user.destroy', $lecturer->id) }}" method="post" onsubmit=" return confirm('Are you sure want to delete this item?')" style="display:inline;">
+                                            <a href="{{ route('lecturer.edit', $lecturer->id) }}" class="btn btn-sm btn-primary mr-2"><i class="fa fa-pen"></i> Edit</a>
+                                            <form action="{{ route('lecturer.destroy', $lecturer->id) }}" method="post" onsubmit=" return confirm('Are you sure want to delete this item?')" style="display:inline;">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button class="btn btn-sm btn-danger {{ $lecturer->role == 'admin' ? 'disabled' : '' }}"><i class="fa fa-trash"></i> Delete</button>
