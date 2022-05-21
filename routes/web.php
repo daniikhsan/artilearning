@@ -29,6 +29,7 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('student', App\Http\Controllers\StudentController::class);
         Route::resource('department', App\Http\Controllers\DepartmentController::class);
         Route::resource('major', App\Http\Controllers\MajorController::class);
-        Route::resource('course', App\Http\Controllers\CourseController::class);
+        Route::resource('course-setting', App\Http\Controllers\CourseSettingController::class);
     });
+    Route::resource('course', App\Http\Controllers\CourseController::class);
 });

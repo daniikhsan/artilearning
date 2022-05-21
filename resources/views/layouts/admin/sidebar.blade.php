@@ -59,15 +59,15 @@
                 <a href="{{ route('major.index') }}" class="nav-link {{ Route::is('major.*') ? 'active' : '' }}">
                     <i class="nav-icon fas fa-city"></i>
                     <p>
-                        Major
+                        Majors
                     </p>
                 </a>
             </li>
             <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="{{ route('course-setting.index') }}" class="nav-link {{ Route::is('course-setting.*') ? 'active' : '' }}">
                     <i class="nav-icon fas fa-cogs"></i>
                     <p>
-                        Course Settings
+                        Courses
                     </p>
                 </a>
             </li>
