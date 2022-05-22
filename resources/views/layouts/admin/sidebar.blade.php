@@ -81,14 +81,26 @@
             </p>
             </a>
         </li>
-        <li class="nav-item ">
-            <a href="{{ route('course.show', 1) }}" class="nav-link {{ Route::is('course.show', 1) ? 'active' : '' }}">
-            <i class="nav-icon far fa-circle"></i>
-            <p>
-                Pemrograman Web
-            </p>
-            </a>
-        </li>
+        @php 
+            if(auth()->user()->role == 'admin'){
+                $user_course = \App\Models\Course::all();
+            }elseif(auth()->user()->role == 'lecturer') {
+                $user_course = \App\Models\Course::where('user_id', auth()->user()->id)->get();
+            }else{
+                $user_course_id = \App\Models\UserCourse::where('user_id', auth()->user()->id)->pluck('course_id')->toArray();
+                $user_course = \App\Models\Course::whereIn('id', $user_course_id)->get();
+            }
+        @endphp
+        @foreach($user_course as $course)
+            <li class="nav-item ">
+                <a href="{{ route('course.show', $course->id) }}" class="nav-link {{ Route::is('course.show', $course->id) ? 'active' : Route::is('exam.*', $course->id) ? 'active' : '' }}">
+                <i class="nav-icon far fa-circle"></i>
+                <p>
+                    {{ $course->name }}
+                </p>
+                </a>
+            </li>
+        @endforeach
     </ul>
     </nav>
     <!-- /.sidebar-menu -->

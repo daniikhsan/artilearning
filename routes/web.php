@@ -33,5 +33,11 @@ Route::middleware(['auth'])->group(function () {
         Route::get('course-setting/{id}/add-student', [App\Http\Controllers\CourseSettingController::class, 'add_student'])->name('course-setting.add-student');
         Route::post('course-setting/{id}/add-student', [App\Http\Controllers\CourseSettingController::class, 'store_student'])->name('course-setting.store.add-student');
     });
+    Route::middleware(['lecturer'])->group(function () {
+        Route::get('exam/{course_id}/create', [App\Http\Controllers\ExamController::class, 'create'])->name('exam.create');
+        Route::post('exam/{course_id}/create', [App\Http\Controllers\ExamController::class, 'store'])->name('exam.store');
+        Route::get('exam/{course_id}/{exam_id}/question', [App\Http\Controllers\ExamController::class, 'add_question'])->name('exam.create.question');
+        Route::post('exam/{course_id}/{exam_id}/question', [App\Http\Controllers\ExamController::class, 'store_question'])->name('exam.store.question');
+    });
     Route::resource('course', App\Http\Controllers\CourseController::class);
 });

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Course;
+use App\Models\UserCourse;
 
 class CourseController extends Controller
 {
@@ -16,8 +17,19 @@ class CourseController extends Controller
     {
         $title = 'All Courses';
 
+        if(auth()->user()->role == 'admin'){
+            $courses = Course::all();
+        }elseif(auth()->user()->role == 'lecturer') {
+            $courses = Course::where('user_id', auth()->user()->id)->get();
+        }
+        else{
+            $user_course = UserCourse::where('user_id', auth()->user()->id)->pluck('course_id')->toArray();
+            $courses = Course::whereIn('id', $user_course)->get();
+        }
+
         return view('courses.index',[
-            'title' => $title
+            'title' => $title,
+            'courses' => $courses
         ]);
     }
 
@@ -52,10 +64,12 @@ class CourseController extends Controller
     {
         $course = Course::findOrFail($id);
         $title = $course->name;
-
+        $exams = $course->exams;
+        
         return view('courses.show',[
             'title' => $title,
             'course' => $course,
+            'exams' => $exams,
         ]);
     }
 
