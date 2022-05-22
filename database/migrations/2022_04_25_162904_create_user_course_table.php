@@ -16,6 +16,7 @@ class CreateUserCourseTable extends Migration
         Schema::create('user_course', function (Blueprint $table) {
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('course_id');
+            $table->enum('role',['lecturer','student'])->default('student');
             $table->tinyInteger('is_active')->default(1);
             $table->timestamps();
 

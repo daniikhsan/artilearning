@@ -57,6 +57,7 @@
                                 <td class="text-center">{{ $course->day }} ({{ $course->hour }} WITA)</td>
                                 <td class="text-center">
                                     <div class="btn btn-toolbar justify-content-center">
+                                        <a href="{{ route('course-setting.add-student', $course->id) }}" class="btn btn-sm btn-default mr-2"><i class="fa fa-plus"></i></a>
                                         <a href="{{ route('course-setting.edit', $course->id) }}" class="btn btn-sm btn-primary mr-2"><i class="fa fa-pen"></i></a>
                                         <form action="{{ route('course-setting.destroy', $course->id) }}" method="post" onsubmit=" return confirm('Are you sure want to delete this item?')">
                                             @csrf

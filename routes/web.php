@@ -30,6 +30,8 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('department', App\Http\Controllers\DepartmentController::class);
         Route::resource('major', App\Http\Controllers\MajorController::class);
         Route::resource('course-setting', App\Http\Controllers\CourseSettingController::class);
+        Route::get('course-setting/{id}/add-student', [App\Http\Controllers\CourseSettingController::class, 'add_student'])->name('course-setting.add-student');
+        Route::post('course-setting/{id}/add-student', [App\Http\Controllers\CourseSettingController::class, 'store_student'])->name('course-setting.store.add-student');
     });
     Route::resource('course', App\Http\Controllers\CourseController::class);
 });

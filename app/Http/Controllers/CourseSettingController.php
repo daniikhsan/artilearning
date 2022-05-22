@@ -6,8 +6,10 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Requests\CourseStoreRequest;
 use App\Http\Requests\CourseUpdateRequest;
+use App\Http\Requests\CourseAddStudentRequest;
 use App\Models\Course;
 use App\Models\User;
+use App\Models\UserCourse;
 
 class CourseSettingController extends Controller
 {
@@ -136,5 +138,43 @@ class CourseSettingController extends Controller
         $course->delete();
 
         return redirect()->route('course-setting.index')->with('success', 'Course successfully deleted.');
+    }
+
+    public function add_student($id)
+    {
+        $course = Course::findOrFail($id);
+        $title = 'Add Student(s)';
+        $students = User::where('role','student')->get();
+
+        return view('courses.settings-crud.add-student',[
+            'title' => $title,
+            'students' => $students,
+            'course' => $course,
+        ]);
+    }
+    
+    public function store_student(CourseAddStudentRequest $request, $id)
+    {
+        $course = Course::findOrFail($id);
+        $course_user_id = UserCourse::where('course_id', $id)->pluck('user_id')->toArray();
+        $ids = [];
+
+        try{
+            foreach($request->user_id as $key => $value){
+                if(in_array($value, $ids) || in_array($value, $course_user_id)){
+                    continue;
+                }
+                UserCourse::create([
+                    'user_id' => $value,
+                    'role' => 'student',
+                    'course_id' => $course->id
+                ]);
+                array_push($ids, $value);
+            }
+
+            return redirect()->route('course-setting.index')->with('success', 'Student(s) successfully added.');
+        }catch(\Throwable $th){
+            return redirect()->route('course-setting.add-student', $course->id)->with('error', 'Something went wrong. Make sure the data you have entered is correct and there is no duplication.' . $th->getMessage());
+        }
     }
 }
