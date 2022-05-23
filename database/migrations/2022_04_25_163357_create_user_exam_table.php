@@ -18,8 +18,7 @@ class CreateUserExamTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('exam_id');
             $table->dateTime('start_datetime');
-            $table->dateTime('end_datetime');
-            $table->dateTime('finisih_datetime');
+            $table->dateTime('finish_datetime')->nullable();
             $table->tinyInteger('is_active')->default(1);
             $table->timestamps();
 

@@ -17,6 +17,7 @@ class CreateGradeDetailTable extends Migration
             $table->id();
             $table->unsignedBigInteger('grade_id');
             $table->unsignedBigInteger('user_answer_id');
+            $table->unsignedBigInteger('category_id');
             $table->integer('score');
             $table->timestamps();
 

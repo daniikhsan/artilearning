@@ -38,12 +38,21 @@ $current_date = date('D, d M Y H:i:s', time());
     </div><!-- /.container-fluid -->
 </div>
 <!-- /.content-header -->
-
+@php 
+use App\Models\UserExam;
+use App\Models\Grade;
+@endphp
 <!-- Main content -->
 <section class="content">
     <div class="container-fluid">
         <div class="row">
             @foreach($exams as $exam)
+                @php 
+                    $user_exam = UserExam::where('user_id', auth()->user()->id)->where('exam_id',$exam->id)->first();
+                    if($user_exam){
+                        $grade = Grade::where('user_exam_id', $user_exam->id)->first();
+                    }
+                @endphp
                 <div class="col-4">
                     <div class="card">
                         <div class="card-header">
@@ -52,13 +61,23 @@ $current_date = date('D, d M Y H:i:s', time());
                         <div class="card-body">
                             <p class="card-text">
                                 Date : <b>{{ date('D, d M Y H:i:s' ,strtotime($exam->start_datetime)) }} s/d {{ date('D, d M Y H:i:s' ,strtotime($exam->end_datetime)) }} WITA</b>  <br>
-                                Your Score : <b>-/-</b>
+                                Your Score : <b>{{ $user_exam? $grade->score : '-' }}/100</b>
                                  
                             </p>
                             @if(auth()->user()->role == 'student')
-                                <a href="#" class="btn btn-primary {{ $current_date < date('D, d M Y H:i:s' ,strtotime($exam->start_datetime)) ? 'disabled' : $current_date > date('D, d M Y H:i:s' ,strtotime($exam->end_datetime)) ? 'disabled' : ''  }}">Attempt</a>
-                                @if($current_date > date('D, d M Y H:i:s' ,strtotime($exam->end_datetime)))
-                                    <a href="#" class="btn btn-default ">Review</a>
+                                
+                                @if($user_exam)
+                                    @if($user_exam->finish_datetime == null)
+                                        @if(Carbon\Carbon::now() >= $exam->start_datetime)
+                                            <a href="{{ route('exam.attempt', [$course->id, $exam->id]) }}" class="btn btn-primary">Attempt</a>
+                                        @endif
+                                    @else
+                                        <a href="{{ route('exam.review', [$course->id, $exam->id, $user_exam->id]) }}" class="btn btn-default ">Review</a>
+                                    @endif
+                                @else 
+                                    @if(Carbon\Carbon::now() >= $exam->start_datetime && Carbon\Carbon::now() <= $exam->end_datetime)
+                                        <a href="{{ route('exam.attempt', [$course->id, $exam->id]) }}" class="btn btn-primary">Attempt</a>
+                                    @endif 
                                 @endif
                             @endif
                             @if(auth()->user()->role == 'lecturer')
@@ -80,3 +99,12 @@ $current_date = date('D, d M Y H:i:s', time());
 </section>
 
 @endsection
+
+@push('css')
+<!-- iCheck for checkboxes and radio inputs -->
+<link rel="stylesheet" href="{{ asset('template/admin/plugins/icheck-bootstrap/icheck-bootstrap.min.css')}}">
+@endpush
+
+@push('js')
+
+@endpush

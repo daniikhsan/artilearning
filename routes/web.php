@@ -39,5 +39,11 @@ Route::middleware(['auth'])->group(function () {
         Route::get('exam/{course_id}/{exam_id}/question', [App\Http\Controllers\ExamController::class, 'add_question'])->name('exam.create.question');
         Route::post('exam/{course_id}/{exam_id}/question', [App\Http\Controllers\ExamController::class, 'store_question'])->name('exam.store.question');
     });
+    Route::middleware(['student'])->group(function () {
+        Route::get('exam/{course_id}/{exam_id}/attempt', [App\Http\Controllers\ExamController::class, 'attempt'])->name('exam.attempt');
+        Route::post('exam/{course_id}/{exam_id}/submit', [App\Http\Controllers\ExamController::class, 'submit'])->name('exam.submit');
+        Route::get('exam/{course_id}/{exam_id}/review/{user_exam_id}', [App\Http\Controllers\ExamController::class, 'review'])->name('exam.review');
+        Route::get('exam/{course_id}/{exam_id}/review/{user_exam_id}/pdf', [App\Http\Controllers\ExamController::class, 'export_pdf'])->name('exam.pdf');
+    });
     Route::resource('course', App\Http\Controllers\CourseController::class);
 });
