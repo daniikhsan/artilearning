@@ -19,9 +19,9 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::middleware(['auth'])->group(function () {
+    Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
     Route::middleware(['admin'])->group(function () {
         Route::resource('user', App\Http\Controllers\UserController::class);
         Route::post('user/import', [App\Http\Controllers\UserController::class, 'import'])->name('user.import');

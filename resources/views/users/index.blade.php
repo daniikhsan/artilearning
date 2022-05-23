@@ -10,7 +10,6 @@
             </div><!-- /.col -->
             <div class="col-md-6">
                 <a href="{{ route('user.create') }}" class="btn btn-outline-primary float-right"><i class="fas fa-plus mr-2"></i> Add User</a>
-                <button data-target="#importUsers" data-toggle="modal" class="btn btn-outline-secondary float-right mr-2"><i class="fas fa-upload mr-2"></i> Import Users</button>
             </div>
         </div><!-- /.row -->
         @if(Session::get('success'))

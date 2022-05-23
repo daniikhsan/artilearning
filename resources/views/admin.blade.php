@@ -12,15 +12,7 @@
     </div><!-- /.container-fluid -->
 </div>
 <!-- /.content-header -->
-@php 
-use App\Models\UserCourse;
-use App\Models\UserExam;
-
-$user_courses = UserCourse::where('user_id', auth()->user()->id)->get();
-$user_exams = UserExam::where('user_id', auth()->user()->id)->get();
-@endphp
 <!-- Main content -->
-@if(auth()->user()->role == 'student')
 <section class="content">
     <div class="row">
         <div class="col-md-9">
@@ -37,7 +29,7 @@ $user_exams = UserExam::where('user_id', auth()->user()->id)->get();
             <!-- small box -->
             <div class="small-box bg-info">
                 <div class="inner">
-                    <h3>{{ count($user_courses) }}</h3>
+                    <h3>{{ count($courses) }}</h3>
 
                     <p>Courses</p>
                 </div>
@@ -49,22 +41,31 @@ $user_exams = UserExam::where('user_id', auth()->user()->id)->get();
             <!-- small box -->
             <div class="small-box bg-success">
                 <div class="inner">
-                    <h3>{{ count($user_exams) }}</h3>
+                    <h3>{{ count($lecturers) }}</h3>
 
-                    <p>Exams</p>
+                    <p>Lecturers</p>
                 </div>
                 <div class="icon">
-                    <i class="fas fa-sticky-note"></i>
+                    <i class="fas fa-chalkboard-teacher"></i>
+                </div>
+                <!-- <a href="#" class="small-box-footer">All Courses <i class="fas fa-arrow-circle-right"></i></a> -->
+            </div>
+            <div class="small-box bg-secondary">
+                <div class="inner">
+                    <h3>{{ count($students) }}</h3>
+
+                    <p>Students</p>
+                </div>
+                <div class="icon">
+                    <i class="fas fa-user-graduate"></i>
                 </div>
                 <!-- <a href="#" class="small-box-footer">All Courses <i class="fas fa-arrow-circle-right"></i></a> -->
             </div>
         </div>
     </div>
 </section>
-@endif
 <!-- /.content -->
 @endsection
-
 
 @push('script')
 <!-- FLOT PIE PLUGIN - also used to draw donut charts -->
@@ -74,7 +75,7 @@ $user_exams = UserExam::where('user_id', auth()->user()->id)->get();
 <script>
     $(function () {
         let label = '{{ $courses_label }}'
-        let data = '{{ json_encode($courses_data) }}'
+        let data = '{{ $courses_data }}'
 
         label = label.replace(/&quot;/g, "'").split("'")
         label = label.filter(function(item){
