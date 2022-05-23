@@ -122,7 +122,7 @@
                                 <div class="col-md-8"></div>
                                 <div class="col-md-4">
                                     <button class="btn btn-primary float-right mt-2" type="submit"><i class="fas fa-save mr-2"></i> Save</button>
-                                    <button type="button" class="btn btn-default float-right mt-2 mr-2" id="add-category"><i class="fas fa-plus mr-1"></i> Add More Category</button>
+                                    <button type="button" class="btn btn-default float-right mt-2 mr-2" id="add-category"><i class="fas fa-plus mr-1"></i> Add More Question</button>
                                 </div>
                             </div>
                         </form>

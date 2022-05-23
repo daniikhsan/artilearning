@@ -184,7 +184,7 @@ class ExamController extends Controller
 
             return redirect()->route('course.show', $course_id)->with('success', 'Questions successfully added.');
         } catch (\Throwable $th) {
-            return redirect()->route('exam.create.question', [$course_id, $exam_id])->with('error', 'Something went wrong. Make sure the data you have entered is correct and there is no duplication.' . $th->getMessage());
+            return redirect()->route('exam.create.question', [$course_id, $exam_id])->with('error', 'Something went wrong. Make sure the data you have entered is correct and there is no duplication.' . $th);
         }
 
         // dd($options);
@@ -269,6 +269,10 @@ class ExamController extends Controller
                 ])->get();
                 
                 $total_question_category = count($questions_exam_category);
+                
+                if($total_question_category == 0){
+                    continue;
+                }
 
                 foreach ($questions_exam_category as $key => $question_exam_category) {
                     $user_answers_category = UserAnswer::where('question_exam_id',$question_exam_category['id'])->first();
@@ -278,7 +282,7 @@ class ExamController extends Controller
                     }
 
                 }
-
+                
                 $score = $correct/$total_question_category * 100;
 
                 $grade_details = GradeDetail::create([
@@ -293,7 +297,7 @@ class ExamController extends Controller
 
             return redirect()->route('exam.review', [$course_id, $exam_id, $user_exam->id]);
         } catch (\Throwable $th) {
-            return redirect()->route('exam.attempt', [$course_id, $exam_id])->with('error', 'Something went wrong. Make sure the data you have entered is correct and there is no duplication.' .$th->getMessage());
+            return redirect()->route('exam.attempt', [$course_id, $exam_id])->with('error', 'Something went wrong. Make sure the data you have entered is correct and there is no duplication.' .$th);
         }
     }
 

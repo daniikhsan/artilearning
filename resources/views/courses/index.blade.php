@@ -34,7 +34,6 @@ $current_date = date('D, d M Y H:i:s', time());
                                         @php  
                                             $exams = $course->exams;
                                         @endphp
-                                        Next Exam&nbsp;: {{ $current_date < date('D, d M Y H:i:s' ,strtotime($exams->last()->start_datetime))  ? date('D, d M Y H:i:s' ,strtotime($exams->last()->start_datetime)) . ' WITA' : '-'  }}
                                     </p>
                                     <a href="{{ route('course.show',$course->id) }}" class="btn btn-primary">Go to Course</a>
                                 </div>

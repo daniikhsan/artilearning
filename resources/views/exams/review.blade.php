@@ -10,9 +10,6 @@
             <h1 class="m-0">{{ $title }}</h1> 
             <p class="m-0">Start : {{ \Carbon\Carbon::parse($user_exam->start_datetime)->format('D, d M Y H:i:s') }} WITA</p>
             <p class="m-0">End : {{ \Carbon\Carbon::parse($user_exam->finish_datetime)->format('D, d M Y H:i:s') }} WITA</p>
-        </div><!-- /.col -->
-        <div class="col-md-6">
-            <a href="{{ route('exam.pdf', [$course_id, $exam_id, $user_exam_id]) }}" class="btn btn-default float-right"><i class="fas fa-print mr-2"></i> Export to PDF</a>
         </div>
     </div><!-- /.row -->
     </div><!-- /.container-fluid -->

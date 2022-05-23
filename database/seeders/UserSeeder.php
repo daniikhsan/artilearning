@@ -40,7 +40,20 @@ class UserSeeder extends Seeder
                 'religion' => 'Islam',
                 'major_id' => 1,
                 'role' => 'student',
-            ]
+            ],
+            [
+                'id_number' => '10201066',
+                'name' => 'Muhammad Taufik',
+                'email' => '10201066@student.itk.ac.id',
+                'password' => bcrypt('password'),
+                'gender' => 'Male',
+                'birthplace' => 'Balikpapan',
+                'date_of_birth' => '2002-05-01',
+                'address' => 'KM 15, Balikpapan',
+                'religion' => 'Islam',
+                'major_id' => 1,
+                'role' => 'student',
+            ],
         ];
 
         for ($i=0; $i < count($users); $i++) { 

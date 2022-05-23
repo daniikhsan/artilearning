@@ -16,7 +16,7 @@ class CreateGradeDetailTable extends Migration
         Schema::create('grade_detail', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('grade_id');
-            $table->unsignedBigInteger('user_answer_id');
+            $table->unsignedBigInteger('user_answer_id')->nullable();
             $table->unsignedBigInteger('category_id');
             $table->integer('correct_answer');
             $table->integer('total_question');
