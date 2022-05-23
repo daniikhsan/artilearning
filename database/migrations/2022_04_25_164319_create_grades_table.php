@@ -16,7 +16,7 @@ class CreateGradesTable extends Migration
         Schema::create('grades', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_exam_id');
-            $table->integer('score');
+            $table->float('score');
             $table->timestamps();
 
             $table->foreign('user_exam_id')
