@@ -87,7 +87,7 @@ use App\Models\Grade;
                                 @if(!$question_exists)
                                     <a href="{{ route('exam.create.question', [$course->id, $exam->id]) }}" class="btn btn-default">Add Question</a>
                                 @endif
-                                <a href="{{ route('exam.create.question', [$course->id, $exam->id]) }}" class="btn btn-success">Report</a>
+                                <a href="{{ route('exam.report', [$course->id, $exam->id]) }}" class="btn btn-success">Report</a>
                             @endif
 
                         </div>

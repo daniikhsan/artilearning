@@ -384,4 +384,15 @@ class ExamController extends Controller
         ])->setOptions(['defaultFont' => 'sans-serif', 'isHtml5ParserEnabled' => TRUE, 'setIsRemoteEnabled' => TRUE])->setPaper('A4','portrait');
         return $pdf->stream('Review - '. $exam->name .'.pdf');
     }
+
+    public function report($course_id, $exam_id){
+        // $course = Course::findOrFail($id);
+        $title = 'Report';
+        $user_exams = UserExam::where('exam_id', $exam_id)->where('finish_datetime','!=',null)->get();
+        // return $user_exams;
+        return view('exams.report',[
+            'title' => $title,
+            'user_exams' => $user_exams,
+        ]);
+    }
 }

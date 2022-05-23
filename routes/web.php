@@ -38,6 +38,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('exam/{course_id}/create', [App\Http\Controllers\ExamController::class, 'store'])->name('exam.store');
         Route::get('exam/{course_id}/{exam_id}/question', [App\Http\Controllers\ExamController::class, 'add_question'])->name('exam.create.question');
         Route::post('exam/{course_id}/{exam_id}/question', [App\Http\Controllers\ExamController::class, 'store_question'])->name('exam.store.question');
+        Route::get('exam/{course_id}/{exam_id}/report', [App\Http\Controllers\ExamController::class, 'report'])->name('exam.report');
     });
     Route::middleware(['student'])->group(function () {
         Route::get('exam/{course_id}/{exam_id}/attempt', [App\Http\Controllers\ExamController::class, 'attempt'])->name('exam.attempt');
